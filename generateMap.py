@@ -7,6 +7,9 @@ defaultCleanMap = [[1, 1, 1, 1, 1, 1], [1, 0, 0, 0, 0, 1], [1, 0, 0, 0, 0, 1],
 class Map:
     def __init__(self, mapArg=defaultCleanMap):
         self.map = None
+        if (len(mapArg) < 2):
+            print('Mapa deve ter no mínimo tamanho 2x2, usando mapa padrão')
+            mapArg = defaultCleanMap
         self.setMap(mapArg)
 
     def getMap(self):
@@ -20,7 +23,12 @@ class Map:
         if (len(map) == (length / len(map))):
             self.map = map
         else:
-            print("A matriz informada não é quadrada")
+            print('A matriz informada não é quadrada')
+
+    def setMapCoo(self, value, posX, posY):
+        map = self.getMap()
+        map[posX][posY] = value
+        self.setMap(map)
 
     def dirtyingFloor(self):
         dirtyMap = self.getMap()
@@ -31,11 +39,3 @@ class Map:
                     dirtyMap[i][j] = random.choice([0, 2])
 
         self.setMap(dirtyMap)
-
-    def clear(self, posX, posY):
-        map = self.getMap()
-
-        if (map[posX][posY] != 1):
-            map[posX][posY] = 0
-
-        self.setMap(map)

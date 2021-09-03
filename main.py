@@ -1,14 +1,16 @@
 from generateMap import Map
+from cleaner import Cleaner
 import pygame
 
 
-def main(mapOBJ):
+def main(mapOBJ, cleaner):
     pygame.init()
-    map = mapOBJ.getMap()
     cleaner = 'images/cleaner.png'
     dirt = 'images/dirt.png'
     floor = 'images/floor.png'
     wall = 'images/wall.png'
+    imageRes = 100
+    delayDisplay = 100
     widthFrame = 100
     heightFrame = 100
     widthDisplay = len(mapOBJ.getMap()) * 100
@@ -24,9 +26,13 @@ def main(mapOBJ):
 
     quitGame = False
 
+    mapOBJ.dirtyingFloor()
+
     while not quitGame:
 
-        pygame.time.delay(100)
+        map = mapOBJ.getMap()
+
+        pygame.time.delay(delayDisplay)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -34,16 +40,13 @@ def main(mapOBJ):
 
         for i in range(0, len(map)):
             for j in range(0, len(map)):
+                insert = pygame.image.load(elements[map[i][j]])
+                insert = pygame.transform.scale(insert,
+                                                (widthFrame, heightFrame))
                 if (i == 0 and j == 0):
-                    insert = pygame.image.load(elements[map[i][j]])
-                    insert = pygame.transform.scale(insert,
-                                                    (widthFrame, heightFrame))
                     window.blit(insert, (i, j))
                 else:
-                    insert = pygame.image.load(elements[map[i][j]])
-                    insert = pygame.transform.scale(insert,
-                                                    (widthFrame, heightFrame))
-                    window.blit(insert, (i * 100, j * 100))
+                    window.blit(insert, (i * imageRes, j * imageRes))
 
         pygame.display.update()
 
@@ -52,4 +55,5 @@ def main(mapOBJ):
 
 if __name__ == "__main__":
     mapOBJ = Map()
-    main(mapOBJ)
+    cleaner = Cleaner(mapOBJ)
+    main(mapOBJ, cleaner)
