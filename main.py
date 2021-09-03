@@ -1,22 +1,22 @@
 from generateMap import Map
 import pygame
 
-map = Map()
 
-
-def main(map):
+def main(mapOBJ):
     pygame.init()
-
+    map = mapOBJ.getMap()
     cleaner = 'images/cleaner.png'
     dirt = 'images/dirt.png'
     floor = 'images/floor.png'
     wall = 'images/wall.png'
-    width = 100
-    height = 100
+    widthFrame = 100
+    heightFrame = 100
+    widthDisplay = len(mapOBJ.getMap()) * 100
+    heightDisplay = len(mapOBJ.getMap()) * 100
 
     elements = {3: cleaner, 2: dirt, 1: wall, 0: floor}
 
-    window = pygame.display.set_mode((600, 600))
+    window = pygame.display.set_mode((widthDisplay, heightDisplay))
     icon = pygame.image.load('images/icon.png')
 
     pygame.display.set_caption("AAPA - Aspirador")
@@ -36,11 +36,13 @@ def main(map):
             for j in range(0, len(map)):
                 if (i == 0 and j == 0):
                     insert = pygame.image.load(elements[map[i][j]])
-                    insert = pygame.transform.scale(insert, (width, height))
+                    insert = pygame.transform.scale(insert,
+                                                    (widthFrame, heightFrame))
                     window.blit(insert, (i, j))
                 else:
                     insert = pygame.image.load(elements[map[i][j]])
-                    insert = pygame.transform.scale(insert, (width, height))
+                    insert = pygame.transform.scale(insert,
+                                                    (widthFrame, heightFrame))
                     window.blit(insert, (i * 100, j * 100))
 
         pygame.display.update()
@@ -49,4 +51,5 @@ def main(map):
 
 
 if __name__ == "__main__":
-    main()
+    mapOBJ = Map()
+    main(mapOBJ)
