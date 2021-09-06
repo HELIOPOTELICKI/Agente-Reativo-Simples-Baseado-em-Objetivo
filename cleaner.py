@@ -20,7 +20,15 @@ class Cleaner:
     def setCleaner(self, posX, posY):
         map = self.mapOBJ.getMap()
         map[posX][posY] = self.cleaner
+        self.setPosition(posX, posY)
         self.mapOBJ.setMap(map)
+
+    def setPosition(self, posX, posY):
+        self.posX = posX
+        self.posY = posY
+
+    def getPosition(self):
+        return (f'[{self.posX}][{self.posY}]')
 
     def cleaning(self):
         pass
