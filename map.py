@@ -23,7 +23,8 @@ class Map:
         if (len(map) == (length / len(map))):
             self.map = map
         else:
-            print('A matriz informada não é quadrada')
+            self.map = defaultCleanMap
+            print('A matriz informada não é quadrada, usando mapa padrão')
 
     def setMapCoo(self, value, posX, posY):
         map = self.getMap()
