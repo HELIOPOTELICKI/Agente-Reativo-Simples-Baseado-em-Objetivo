@@ -20,10 +20,10 @@ def main(mapOBJ, cleanerOBJ):
         pygame.display.update()
 
     pygame.init()
-
-    dirt = 'images/dirt.png'
-    floor = 'images/floor.png'
-    wall = 'images/wall.png'
+    cleanerImg = 'images/cleaner.png'
+    dirtImg = 'images/dirt.png'
+    floorImg = 'images/floor.png'
+    wallImg = 'images/wall.png'
     imageRes = 100
     delayDisplay = 500
     widthFrame = 100
@@ -31,7 +31,7 @@ def main(mapOBJ, cleanerOBJ):
     widthDisplay = len(mapOBJ.getMap()) * 100
     heightDisplay = len(mapOBJ.getMap()) * 100
 
-    elements = {2: dirt, 1: wall, 0: floor}
+    elements = {3: cleanerImg, 2: dirtImg, 1: wallImg, 0: floorImg}
 
     window = pygame.display.set_mode((widthDisplay, heightDisplay))
     icon = pygame.image.load('images/icon.png')
@@ -43,7 +43,16 @@ def main(mapOBJ, cleanerOBJ):
 
     map = mapOBJ.getMap()
     generateMap()
+
+    print(mapOBJ.checkTheDirt())
     mapOBJ.dirtyingFloor()
+    print(mapOBJ.checkTheDirt())
+
+    cleaner = pygame.image.load(elements[3])
+    cleaner = pygame.transform.scale(cleaner, (widthFrame, heightFrame))
+    position = cleanerOBJ.getPosition()
+    window.blit(cleaner, (position[0] * imageRes, position[1] * imageRes))
+    generateMap()
 
     while not quitGame:
 

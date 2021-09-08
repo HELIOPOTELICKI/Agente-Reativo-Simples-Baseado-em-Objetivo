@@ -40,3 +40,11 @@ class Map:
                     dirtyMap[i][j] = random.choice([0, 2])
 
         self.setMap(dirtyMap)
+
+    def checkTheDirt(self):
+        map = self.getMap()
+        for i in range(0, len(map)):
+            if (2 in map[i]):
+                return True
+
+        return False

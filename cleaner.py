@@ -3,7 +3,6 @@ from random import randint
 
 class Cleaner:
     def __init__(self, mapOBJ, posX=None, posY=None):
-        self.cleaner = 'images/cleaner.png'
         self.posX = posX
         self.posY = posY
         self.mapOBJ = mapOBJ
@@ -25,10 +24,7 @@ class Cleaner:
         position = self.getPosition()
         if (not self.posX == None):
             self.clear(position[0], position[1])
-        map = self.mapOBJ.getMap()
-        map[posX][posY] = self.cleaner
         self.setPosition(posX, posY)
-        self.mapOBJ.setMap(map)
 
     def setPosition(self, posX, posY):
         self.posX = posX
