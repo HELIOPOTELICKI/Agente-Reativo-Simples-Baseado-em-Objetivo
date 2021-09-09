@@ -7,8 +7,8 @@ defaultCleanMap = [[1, 1, 1, 1, 1, 1], [1, 0, 0, 0, 0, 1], [1, 0, 0, 0, 0, 1],
 class Map:
     def __init__(self, mapArg=defaultCleanMap):
         self.map = None
-        if (len(mapArg) < 2):
-            print('Mapa deve ter no mínimo tamanho 2x2, usando mapa padrão')
+        if (len(mapArg) < 4):
+            print('Mapa deve ter no mínimo tamanho 4x4, usando mapa padrão')
             mapArg = defaultCleanMap
         self.setMap(mapArg)
 

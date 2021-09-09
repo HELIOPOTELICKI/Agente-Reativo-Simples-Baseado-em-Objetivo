@@ -3,21 +3,14 @@ from random import randint, choice
 
 class Cleaner:
     def __init__(self, mapOBJ, posX=None, posY=None):
-        self.posXMap = posX
-        self.posYMap = posY
         self.posXCleaner = posX
         self.posYCleaner = posY
         self.mapOBJ = mapOBJ
-        if (self.posXMap == None):
+        if (self.posXCleaner == None):
             max = len(self.mapOBJ.getMap()) - 2
             x = randint(1, max)
             y = randint(1, max)
-            self.setPositionMap(x, y)
             self.setPositionCleaner(x * 100, y * 100)
-
-    def setPositionMap(self, posXMap, posYMap):
-        self.posXMap = posXMap
-        self.posYMap = posYMap
 
     def setPositionCleaner(self, posXCleaner, posYCleaner):
         self.posXCleaner = posXCleaner
@@ -25,9 +18,6 @@ class Cleaner:
 
     def getPositionCleaner(self):
         return ([self.posXCleaner, self.posYCleaner])
-
-    def getPositionMap(self):
-        return ([self.posXMap, self.posYMap])
 
     def isWallOnFront(self):
         X = int(self.getPositionCleaner()[0] / 100)

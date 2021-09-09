@@ -27,13 +27,16 @@ def main(mapOBJ, cleanerOBJ):
     floorImg = 'images/floor.png'
     wallImg = 'images/wall.png'
     pointsImg = 'images/points.png'
+    iconImg = 'images/icon.png'
     elements = {
+        5: iconImg,
         4: pointsImg,
         3: cleanerImg,
         2: dirtImg,
         1: wallImg,
         0: floorImg
     }
+
     imageRes = 100
     delayDisplay = 500
     widthFrame = 100
@@ -46,8 +49,8 @@ def main(mapOBJ, cleanerOBJ):
     myfont = pygame.font.SysFont('Comic Sans MS', 20)
     fontColor = (0, 0, 0)
     window = pygame.display.set_mode((widthDisplay, heightDisplay))
-    icon = pygame.image.load('images/icon.png')
 
+    icon = pygame.image.load(elements[5])
     pygame.display.set_caption("AAPA - Aspirador")
     pygame.display.set_icon(icon)
 
@@ -67,11 +70,11 @@ def main(mapOBJ, cleanerOBJ):
     pygame.display.update()
 
     while not quitGame:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                quitGame = True
+        while mapOBJ.checkTheDirt() and not quitGame:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    quitGame = True
 
-        while mapOBJ.checkTheDirt():
             pygame.time.delay(delayDisplay)
             generateMap()
 
@@ -103,12 +106,13 @@ def main(mapOBJ, cleanerOBJ):
 
 
 if __name__ == "__main__":
-    # Caso queira alterar para um mapa 6x6, basta passalo como argumento em Map()
-    map = [[1, 1, 1, 1, 1, 1, 1, 1], [1, 0, 0, 0, 0, 0, 0, 1],
-           [1, 0, 0, 0, 0, 0, 0, 1], [1, 0, 0, 0, 0, 0, 0, 1],
-           [1, 0, 0, 0, 0, 0, 0, 1], [1, 0, 0, 0, 0, 0, 0, 1],
-           [1, 0, 0, 0, 0, 0, 0, 1], [1, 1, 1, 1, 1, 1, 1, 1]]
+    # Caso queira alterar para um mapa 6x6, basta passar map como argumento em Map()
+    map = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+           [1, 0, 0, 0, 0, 0, 0, 0, 0, 1], [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+           [1, 0, 0, 0, 0, 0, 0, 0, 0, 1], [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+           [1, 0, 0, 0, 0, 0, 0, 0, 0, 1], [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+           [1, 0, 0, 0, 0, 0, 0, 0, 0, 1], [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]
 
-    mapOBJ = Map()
+    mapOBJ = Map(map)
     cleanerOBJ = Cleaner(mapOBJ)
     main(mapOBJ, cleanerOBJ)
