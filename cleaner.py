@@ -30,7 +30,9 @@ class Cleaner:
         return ([self.posXMap, self.posYMap])
 
     def isWallOnFront(self):
-        position = self.getPositionMap()
+        X = int(self.getPositionCleaner()[0] / 100)
+        Y = int(self.getPositionCleaner()[1] / 100)
+        position = [X, Y]
 
         if (self.mapOBJ.getMap()[position[0] + 1][position[1]] == 1):
             return True
@@ -38,7 +40,9 @@ class Cleaner:
             return False
 
     def isWallOnBack(self):
-        position = self.getPositionMap()
+        X = int(self.getPositionCleaner()[0] / 100)
+        Y = int(self.getPositionCleaner()[1] / 100)
+        position = [X, Y]
 
         if (self.mapOBJ.getMap()[position[0] - 1][position[1]] == 1):
             return True
@@ -46,7 +50,9 @@ class Cleaner:
             return False
 
     def isWallOnUp(self):
-        position = self.getPositionMap()
+        X = int(self.getPositionCleaner()[0] / 100)
+        Y = int(self.getPositionCleaner()[1] / 100)
+        position = [X, Y]
 
         if (self.mapOBJ.getMap()[position[0]][position[1] - 1] == 1):
             return True
@@ -54,7 +60,9 @@ class Cleaner:
             return False
 
     def isWallOnBottom(self):
-        position = self.getPositionMap()
+        X = int(self.getPositionCleaner()[0] / 100)
+        Y = int(self.getPositionCleaner()[1] / 100)
+        position = [X, Y]
 
         if (self.mapOBJ.getMap()[position[0]][position[1] + 1] == 1):
             return True

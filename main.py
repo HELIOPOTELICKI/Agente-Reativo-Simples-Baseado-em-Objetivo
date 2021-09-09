@@ -87,6 +87,10 @@ def main(mapOBJ, cleanerOBJ):
             window.blit(cleaner, (position[0], position[1]))
             pygame.display.update()
 
+    position = cleanerOBJ.getPositionCleaner()
+    window.blit(cleaner, (position[0], position[1]))
+    pygame.display.update()
+
 
 if __name__ == "__main__":
     mapOBJ = Map()
