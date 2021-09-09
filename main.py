@@ -48,7 +48,8 @@ def main(mapOBJ, cleanerOBJ):
     heightFrame = 100
     widthDisplay = len(mapOBJ.getMap()) * 100
     heightDisplay = len(mapOBJ.getMap()) * 100
-
+    counter = 0
+    printPoints = True
     window = pygame.display.set_mode((widthDisplay, heightDisplay))
     icon = pygame.image.load('images/icon.png')
 
@@ -65,7 +66,6 @@ def main(mapOBJ, cleanerOBJ):
 
     cleaner = pygame.image.load(elements[3])
     cleaner = pygame.transform.scale(cleaner, (widthFrame, heightFrame))
-
     position = cleanerOBJ.getPositionCleaner()
 
     window.blit(cleaner, (position[0], position[1]))
@@ -82,17 +82,30 @@ def main(mapOBJ, cleanerOBJ):
             generateDirtyMap()
             perception = cleanerOBJ.simpleReactiveAgent(mapOBJ)
             cleanerOBJ.objectiveAgent(perception, mapOBJ)
-
+            counter += 1
             position = cleanerOBJ.getPositionCleaner()
             window.blit(cleaner, (position[0], position[1]))
             pygame.display.update()
 
-    position = cleanerOBJ.getPositionCleaner()
-    window.blit(cleaner, (position[0], position[1]))
-    pygame.display.update()
+        generateMap()
+        position = cleanerOBJ.getPositionCleaner()
+        window.blit(cleaner, (position[0], position[1]))
+        RED = (255, 0, 0)
+        pygame.display.update()
+
+        if (printPoints):
+            print(f'Pontos --> {counter}')
+            pygame.draw.rect(window, RED, [55, 500, 10, 5], 0)
+            printPoints = False
 
 
 if __name__ == "__main__":
+    # Caso queira alterar para um mapa 6x6, basta passalo como argumento em Map()
+    map = [[1, 1, 1, 1, 1, 1, 1, 1], [1, 0, 0, 0, 0, 0, 0, 1],
+           [1, 0, 0, 0, 0, 0, 0, 1], [1, 0, 0, 0, 0, 0, 0, 1],
+           [1, 0, 0, 0, 0, 0, 0, 1], [1, 0, 0, 0, 0, 0, 0, 1],
+           [1, 0, 0, 0, 0, 0, 0, 1], [1, 1, 1, 1, 1, 1, 1, 1]]
+
     mapOBJ = Map()
     cleanerOBJ = Cleaner(mapOBJ)
     main(mapOBJ, cleanerOBJ)
