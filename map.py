@@ -1,4 +1,4 @@
-import random
+from random import choice
 
 defaultCleanMap = [[1, 1, 1, 1, 1, 1], [1, 0, 0, 0, 0, 1], [1, 0, 0, 0, 0, 1],
                    [1, 0, 0, 0, 0, 1], [1, 0, 0, 0, 0, 1], [1, 1, 1, 1, 1, 1]]
@@ -32,7 +32,7 @@ class Map:
         for i in range(0, len(dirtyMap)):
             for j in range(0, len(dirtyMap)):
                 if dirtyMap[i][j] == 0:
-                    dirtyMap[i][j] = random.choice([0, 2])
+                    dirtyMap[i][j] = choice([0, 2])
 
         self.setMap(dirtyMap)
 

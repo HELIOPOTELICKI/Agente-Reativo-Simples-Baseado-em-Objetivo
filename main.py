@@ -5,6 +5,7 @@ import pygame
 
 def main(mapOBJ, cleanerOBJ):
     pygame.init()
+    pygame.font.init()
 
     def generateMap():
         map = mapOBJ.getMap()
@@ -21,27 +22,18 @@ def main(mapOBJ, cleanerOBJ):
 
         pygame.display.update()
 
-    def generateDirtyMap():
-        map = mapOBJ.getMap()
-
-        for i in range(0, len(map)):
-            for j in range(0, len(map)):
-                if (map[i][j] == 2):
-                    insert = pygame.image.load(elements[map[i][j]])
-                    insert = pygame.transform.scale(insert,
-                                                    (widthFrame, heightFrame))
-                    if (i == 0 and j == 0):
-                        window.blit(insert, (i, j))
-                    else:
-                        window.blit(insert, (i * imageRes, j * imageRes))
-
-        pygame.display.update()
-
     cleanerImg = 'images/cleaner.png'
     dirtImg = 'images/dirt.png'
     floorImg = 'images/floor.png'
     wallImg = 'images/wall.png'
-    elements = {3: cleanerImg, 2: dirtImg, 1: wallImg, 0: floorImg}
+    pointsImg = 'images/points.png'
+    elements = {
+        4: pointsImg,
+        3: cleanerImg,
+        2: dirtImg,
+        1: wallImg,
+        0: floorImg
+    }
     imageRes = 100
     delayDisplay = 500
     widthFrame = 100
@@ -50,6 +42,9 @@ def main(mapOBJ, cleanerOBJ):
     heightDisplay = len(mapOBJ.getMap()) * 100
     counter = 0
     printPoints = True
+    finished = True
+    myfont = pygame.font.SysFont('Comic Sans MS', 20)
+    fontColor = (0, 0, 0)
     window = pygame.display.set_mode((widthDisplay, heightDisplay))
     icon = pygame.image.load('images/icon.png')
 
@@ -59,13 +54,13 @@ def main(mapOBJ, cleanerOBJ):
     quitGame = False
 
     generateMap()
-
     mapOBJ.dirtyingFloor()
-
-    generateDirtyMap()
 
     cleaner = pygame.image.load(elements[3])
     cleaner = pygame.transform.scale(cleaner, (widthFrame, heightFrame))
+    points = pygame.image.load(elements[4])
+    points = pygame.transform.scale(points, (widthFrame, heightFrame))
+
     position = cleanerOBJ.getPositionCleaner()
 
     window.blit(cleaner, (position[0], position[1]))
@@ -79,7 +74,7 @@ def main(mapOBJ, cleanerOBJ):
         while mapOBJ.checkTheDirt():
             pygame.time.delay(delayDisplay)
             generateMap()
-            generateDirtyMap()
+
             perception = cleanerOBJ.simpleReactiveAgent(mapOBJ)
             cleanerOBJ.objectiveAgent(perception, mapOBJ)
             counter += 1
@@ -87,16 +82,24 @@ def main(mapOBJ, cleanerOBJ):
             window.blit(cleaner, (position[0], position[1]))
             pygame.display.update()
 
-        generateMap()
+        if (finished):
+            generateMap()
+            finished = False
+
         position = cleanerOBJ.getPositionCleaner()
         window.blit(cleaner, (position[0], position[1]))
-        RED = (255, 0, 0)
         pygame.display.update()
 
         if (printPoints):
-            print(f'Pontos --> {counter}')
-            pygame.draw.rect(window, RED, [55, 500, 10, 5], 0)
+            window.blit(points, (position[0] + 60, position[1] - 50))
+            textsurface = myfont.render('Pontos', False, (fontColor))
+            textpoints = myfont.render(f'{counter}', False, (fontColor))
+            window.blit(textsurface, (position[0] + 80, position[1] - 40))
+            window.blit(textpoints, (position[0] + 95, position[1] - 20))
+            print(f'Pontos -> {counter}')
             printPoints = False
+
+        pygame.display.update()
 
 
 if __name__ == "__main__":
