@@ -1,40 +1,36 @@
-from random import randint
+from random import randint, choice
 
 
 class Cleaner:
     def __init__(self, mapOBJ, posX=None, posY=None):
-        self.posX = posX
-        self.posY = posY
+        self.posXMap = posX
+        self.posYMap = posY
+        self.posXCleaner = posX
+        self.posYCleaner = posY
         self.mapOBJ = mapOBJ
-        if (self.posX == None):
+        if (self.posXMap == None):
             max = len(self.mapOBJ.getMap()) - 2
             x = randint(1, max)
             y = randint(1, max)
-            self.setCleaner(x, y)
+            self.setPositionMap(x, y)
+            self.setPositionCleaner(x * 100, y * 100)
 
-    def clear(self, posX, posY):
-        map = self.mapOBJ.getMap()
+    def setPositionMap(self, posXMap, posYMap):
+        self.posXMap = posXMap
+        self.posYMap = posYMap
 
-        if (map[posX][posY] != 1):
-            map[posX][posY] = 0
+    def setPositionCleaner(self, posXCleaner, posYCleaner):
+        self.posXCleaner = posXCleaner
+        self.posYCleaner = posYCleaner
 
-        self.mapOBJ.setMap(map)
+    def getPositionCleaner(self):
+        return ([self.posXCleaner, self.posYCleaner])
 
-    def setCleaner(self, posX, posY):
-        position = self.getPosition()
-        if (not self.posX == None):
-            self.clear(position[0], position[1])
-        self.setPosition(posX, posY)
-
-    def setPosition(self, posX, posY):
-        self.posX = posX
-        self.posY = posY
-
-    def getPosition(self):
-        return ([self.posX, self.posY])
+    def getPositionMap(self):
+        return ([self.posXMap, self.posYMap])
 
     def isWallOnFront(self):
-        position = self.getPosition()
+        position = self.getPositionMap()
 
         if (self.mapOBJ.getMap()[position[0] + 1][position[1]] == 1):
             return True
@@ -42,7 +38,7 @@ class Cleaner:
             return False
 
     def isWallOnBack(self):
-        position = self.getPosition()
+        position = self.getPositionMap()
 
         if (self.mapOBJ.getMap()[position[0] - 1][position[1]] == 1):
             return True
@@ -50,7 +46,7 @@ class Cleaner:
             return False
 
     def isWallOnUp(self):
-        position = self.getPosition()
+        position = self.getPositionMap()
 
         if (self.mapOBJ.getMap()[position[0]][position[1] - 1] == 1):
             return True
@@ -58,9 +54,60 @@ class Cleaner:
             return False
 
     def isWallOnBottom(self):
-        position = self.getPosition()
+        position = self.getPositionMap()
 
         if (self.mapOBJ.getMap()[position[0]][position[1] + 1] == 1):
             return True
         else:
             return False
+
+    def simpleReactiveAgent(self, mapOBJ):
+        map = mapOBJ.getMap()
+        posXMap = int(self.getPositionCleaner()[0] / 100)
+        posYMap = int(self.getPositionCleaner()[1] / 100)
+        directions = ["abaixo", "acima", "direita", "esquerda"]
+
+        if map[posXMap][posYMap] == 2:
+            return "aspirar"
+        else:
+            if self.isWallOnFront():
+                directions.remove("direita")
+            elif map[posXMap + 1][posYMap] == 2:
+                return "direita"
+            if self.isWallOnBack():
+                directions.remove("esquerda")
+            elif map[posXMap - 1][posYMap] == 2:
+                return "esquerda"
+            if self.isWallOnBottom():
+                directions.remove("abaixo")
+            elif map[posXMap][posYMap + 1] == 2:
+                return "abaixo"
+            if self.isWallOnUp():
+                directions.remove("acima")
+            elif map[posXMap][posYMap - 1] == 2:
+                return "acima"
+
+            if (mapOBJ.checkTheDirt()):
+                return choice(directions)
+            else:
+                return "NoOp"
+
+    def objectiveAgent(self, perception, mapOBJ):
+        posXCleaner = self.getPositionCleaner()[0]
+        posYCleaner = self.getPositionCleaner()[1]
+        posXRemove = int(self.getPositionCleaner()[0] / 100)
+        posYRemove = int(self.getPositionCleaner()[1] / 100)
+
+        print(f"Ação: '{perception}'")
+        if perception == "direita":
+            self.setPositionCleaner(posXCleaner + 100, posYCleaner)
+        elif perception == "esquerda":
+            self.setPositionCleaner(posXCleaner - 100, posYCleaner)
+        elif perception == "acima":
+            self.setPositionCleaner(posXCleaner, posYCleaner - 100)
+        elif perception == "abaixo":
+            self.setPositionCleaner(posXCleaner, posYCleaner + 100)
+        elif perception == "aspirar":
+            mapOBJ.clear(posXRemove, posYRemove)
+        elif perception == "NoOp":
+            return

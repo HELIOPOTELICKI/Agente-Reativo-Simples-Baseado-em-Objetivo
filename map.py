@@ -26,11 +26,6 @@ class Map:
             self.map = defaultCleanMap
             print('A matriz informada não é quadrada, usando mapa padrão')
 
-    def setMapCoo(self, value, posX, posY):
-        map = self.getMap()
-        map[posX][posY] = value
-        self.setMap(map)
-
     def dirtyingFloor(self):
         dirtyMap = self.getMap()
 
@@ -48,3 +43,11 @@ class Map:
                 return True
 
         return False
+
+    def clear(self, posX, posY):
+        map = self.getMap()
+
+        if (map[posX][posY] != 1):
+            map[posX][posY] = 0
+
+        self.setMap(map)
