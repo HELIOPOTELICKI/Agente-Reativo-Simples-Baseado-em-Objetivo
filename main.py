@@ -118,5 +118,5 @@ if __name__ == "__main__":
             [1, 1, 1, 1, 1]]
 
     mapOBJ = Map()
-    cleanerOBJ = Cleaner(mapOBJ)
+    cleanerOBJ = Cleaner(mapOBJ, 100, 100)
     main(mapOBJ, cleanerOBJ)
