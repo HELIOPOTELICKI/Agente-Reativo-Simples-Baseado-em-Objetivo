@@ -1,5 +1,11 @@
-from random import choice
+'''
+    Atividade Avaliativa: Agentes Inteligentes
+    Grupo: Hélio Potelicki, Luis Felipe Zaguini e Pedro Henrique Roweder
+
+'''
+
 from collections import deque
+from random import choice
 
 defaultCleanMap = [[1, 1, 1, 1, 1, 1], [1, 0, 0, 0, 0, 1], [1, 0, 0, 0, 0, 1],
                    [1, 0, 0, 0, 0, 1], [1, 0, 0, 0, 0, 1], [1, 1, 1, 1, 1, 1]]

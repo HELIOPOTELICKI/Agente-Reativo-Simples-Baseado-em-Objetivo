@@ -1,3 +1,9 @@
+'''
+    Atividade Avaliativa: Agentes Inteligentes
+    Grupo: Hélio Potelicki, Luis Felipe Zaguini e Pedro Henrique Roweder
+
+'''
+
 from random import randint
 
 

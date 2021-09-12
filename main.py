@@ -1,5 +1,11 @@
-from map import Map
+'''
+    Atividade Avaliativa: Agentes Inteligentes
+    Grupo: Hélio Potelicki, Luis Felipe Zaguini e Pedro Henrique Roweder
+
+'''
+
 from cleaner import Cleaner
+from map import Map
 import pygame
 
 
