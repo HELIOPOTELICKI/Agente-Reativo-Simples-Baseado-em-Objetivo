@@ -19,7 +19,7 @@ class Cleaner:
     def getPositionCleaner(self):
         return ([self.posXCleaner, self.posYCleaner])
 
-    def isWallOnFront(self):
+    def isWallOnRight(self):
         X = int(self.getPositionCleaner()[0] / 100)
         Y = int(self.getPositionCleaner()[1] / 100)
         position = [X, Y]
@@ -29,7 +29,7 @@ class Cleaner:
         else:
             return False
 
-    def isWallOnBack(self):
+    def isWallOnLeft(self):
         X = int(self.getPositionCleaner()[0] / 100)
         Y = int(self.getPositionCleaner()[1] / 100)
         position = [X, Y]
@@ -63,32 +63,33 @@ class Cleaner:
         map = mapOBJ.getMap()
         posXMap = int(self.getPositionCleaner()[0] / 100)
         posYMap = int(self.getPositionCleaner()[1] / 100)
-        directions = ["abaixo", "acima", "direita", "esquerda"]
+        dirtF = mapOBJ.getDirt().copy()
+
+        if (len(dirtF) >= 1):
+            dirtF = dirtF.popleft()
 
         if map[posXMap][posYMap] == 2:
-            return "aspirar"
-        else:
-            if self.isWallOnFront():
-                directions.remove("direita")
-            elif map[posXMap + 1][posYMap] == 2:
-                return "direita"
-            if self.isWallOnBack():
-                directions.remove("esquerda")
-            elif map[posXMap - 1][posYMap] == 2:
-                return "esquerda"
-            if self.isWallOnBottom():
-                directions.remove("abaixo")
-            elif map[posXMap][posYMap + 1] == 2:
-                return "abaixo"
-            if self.isWallOnUp():
-                directions.remove("acima")
-            elif map[posXMap][posYMap - 1] == 2:
-                return "acima"
+            mapOBJ.getDirt().remove([posXMap, posYMap])
+            return 'aspirar'
 
-            if (mapOBJ.checkTheDirt()):
-                return choice(directions)
+        else:
+            if (len(dirtF) >= 1):
+                if self.isWallOnBottom():
+                    pass
+                elif ((posXMap == dirtF[0]) and (posYMap < dirtF[1])):
+                    return 'abaixo'
+
+                if self.isWallOnRight():
+                    pass
+                elif ((posXMap != dirtF[0])):
+                    return 'direita'
+
+                if self.isWallOnUp():
+                    pass
+                elif ((posXMap == dirtF[0]) and (posYMap > dirtF[1])):
+                    return 'acima'
             else:
-                return "NoOp"
+                return 'NoOp'
 
     def objectiveAgent(self, perception, mapOBJ):
         posXCleaner = self.getPositionCleaner()[0]
@@ -96,16 +97,17 @@ class Cleaner:
         posXRemove = int(self.getPositionCleaner()[0] / 100)
         posYRemove = int(self.getPositionCleaner()[1] / 100)
 
-        print(f"Ação: '{perception}'")
-        if perception == "direita":
+        print(f'Ação: "{perception}"')
+        if perception == 'direita':
             self.setPositionCleaner(posXCleaner + 100, posYCleaner)
-        elif perception == "esquerda":
+        elif perception == 'esquerda':
             self.setPositionCleaner(posXCleaner - 100, posYCleaner)
-        elif perception == "acima":
+        elif perception == 'acima':
             self.setPositionCleaner(posXCleaner, posYCleaner - 100)
-        elif perception == "abaixo":
+        elif perception == 'abaixo':
             self.setPositionCleaner(posXCleaner, posYCleaner + 100)
-        elif perception == "aspirar":
+        elif perception == 'aspirar':
             mapOBJ.clear(posXRemove, posYRemove)
-        elif perception == "NoOp":
-            return
+        elif perception == 'NoOp':
+            print('FIM')
+            return 'NoOp'

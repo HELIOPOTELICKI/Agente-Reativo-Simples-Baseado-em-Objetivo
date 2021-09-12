@@ -51,10 +51,11 @@ def main(mapOBJ, cleanerOBJ):
     window = pygame.display.set_mode((widthDisplay, heightDisplay))
 
     icon = pygame.image.load(elements[5])
-    pygame.display.set_caption("AAPA - Aspirador")
+    pygame.display.set_caption('AAPA - Aspirador')
     pygame.display.set_icon(icon)
 
     quitGame = False
+    stopCleaning = False
 
     generateMap()
     mapOBJ.dirtyingFloor()
@@ -70,7 +71,7 @@ def main(mapOBJ, cleanerOBJ):
     pygame.display.update()
 
     while not quitGame:
-        while mapOBJ.checkTheDirt() and not quitGame:
+        while not quitGame and not stopCleaning:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     quitGame = True
@@ -79,10 +80,14 @@ def main(mapOBJ, cleanerOBJ):
             generateMap()
 
             perception = cleanerOBJ.simpleReactiveAgent(mapOBJ)
-            cleanerOBJ.objectiveAgent(perception, mapOBJ)
+            resp = cleanerOBJ.objectiveAgent(perception, mapOBJ)
             counter += 1
             position = cleanerOBJ.getPositionCleaner()
             window.blit(cleaner, (position[0], position[1]))
+
+            if (resp == 'NoOp'):
+                stopCleaning = True
+
             pygame.display.update()
 
         if (finished):
@@ -96,16 +101,16 @@ def main(mapOBJ, cleanerOBJ):
         if (printPoints):
             window.blit(points, (position[0] + 60, position[1] - 50))
             textsurface = myfont.render('Pontos', False, (fontColor))
-            textpoints = myfont.render(f'{counter}', False, (fontColor))
+            textpoints = myfont.render(f'{counter-1}', False, (fontColor))
             window.blit(textsurface, (position[0] + 80, position[1] - 40))
             window.blit(textpoints, (position[0] + 95, position[1] - 20))
-            print(f'Pontos -> {counter}')
+            print(f'Pontos -> {counter-1}')
             printPoints = False
 
         pygame.display.update()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     # Caso queira alterar o mapa, basta passar map como argumento em Map()
     # mapa 6x6
     map1 = [[1, 1, 1, 1, 1, 1, 1, 1], [1, 0, 0, 0, 0, 0, 0, 1],
